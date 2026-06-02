@@ -1,0 +1,27 @@
+@Intropy_IdempotencyService_API_HostAddress = http://localhost:8080
+
+### Get info
+GET {{Intropy_IdempotencyService_API_HostAddress}}/info/int101/1337
+Accept: application/json
+
+### Check status
+POST {{Intropy_IdempotencyService_API_HostAddress}}/status
+Content-Type: application/json
+
+{
+    "integration": "int101",
+    "id": "1337",
+    "hash": "38816a4bbe78aa3dbff468dc0d08c217df8cc3b4f3c3fd9f139bab84d69dff5c",
+    "timestamp": "2025-06-10T22:10:33.332Z"
+}
+
+### Commit status
+POST {{Intropy_IdempotencyService_API_HostAddress}}/commit
+Content-Type: application/json
+
+{
+    "integration": "int101",
+    "id": "1337",
+    "hash": "38816a4bbe78aa3dbff468dc0d08c217df8cc3b4f3c3fd9f139bab84d69dff5c",
+    "timestamp": "2025-06-10T22:10:33.332Z"
+}

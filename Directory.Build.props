@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>Integrio</Authors>
+    <Company>Integrio</Company>
+    <Copyright>Copyright (c) 2026 Integrio</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/integrio-intropy/idempotency-service</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/integrio-intropy/idempotency-service</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>intropy;idempotency;dapr</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+</Project>

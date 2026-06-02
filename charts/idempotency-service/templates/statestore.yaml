@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ include "idempotency-service.stateStoreName" . }}
+spec:
+  type: {{ .Values.stateStore.type }}
+  version: {{ .Values.stateStore.version }}
+  metadata:
+    - name: keyPrefix
+      value: "none"
+    {{- .Values.stateStore.metadata | toYaml | nindent 4 }}
+scopes:
+  - {{ include "idempotency-service.fullname" . }}

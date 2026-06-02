@@ -1,0 +1,63 @@
+name: intropy-idempotency-service
+
+services:
+  api:
+    build:
+      context: ../
+      dockerfile: ./Dockerfile.debug
+      secrets:
+        - deploy_user
+        - deploy_password
+    ports:
+      - "8080:8080"
+    environment:
+      DaprComponentsConfig:StateStoreName: "idempotency-service-state-store"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+  
+  api-dapr:
+    image: "daprio/daprd:latest"
+    command: [
+      "./daprd",
+      "--app-id", "api",
+      "--app-port", "8080",
+      "--resources-path", "./dapr-components"
+    ]
+    volumes:
+      - "./dapr-components/:/dapr-components"
+    depends_on:
+      - api
+      - postgres
+    network_mode: "service:api"
+    restart: on-failure
+    
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: idempotency_service
+    ports:
+      - "5432:5432"
+        
+  jaeger:
+    image: jaegertracing/all-in-one:1.67.0
+    ports:
+      - "16686:16686" # Jaeger Web UI
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.103.0
+    volumes:
+      - ./otel/:/etc/otel/
+    command: --config /etc/otel/config.yaml
+    environment:
+      JAEGER_ENDPOINT: "jaeger:4317"
+    ports:
+      - "4317:4317"
+    depends_on:
+      - jaeger
+
+secrets:
+  deploy_user:
+    file: ./secrets/deploy_user.txt
+  deploy_password:
+    file: ./secrets/deploy_password.txt

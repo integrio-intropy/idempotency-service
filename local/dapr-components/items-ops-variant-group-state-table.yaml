@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: idempotency-service-state-store
+spec:
+  type: state.postgresql
+  version: v2
+  metadata:
+    - name: host
+      value: "postgres"
+    - name: port
+      value: "5432"
+    - name: database
+      value: "idempotency_service"
+    - name: user
+      value: "postgres"
+    - name: password
+      value: "postgres"
+    - name: cleanupInterval
+      value: "24h"
+scopes:
+  - api

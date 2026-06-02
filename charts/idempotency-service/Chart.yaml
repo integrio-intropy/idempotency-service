@@ -1,0 +1,11 @@
+apiVersion: v2
+name: idempotency-service
+description: Helm chart for the Intropy Idempotency Service — distributed message deduplication and idempotency checking via Dapr.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+home: https://github.com/integrio-intropy/idempotency-service
+sources:
+  - https://github.com/integrio-intropy/idempotency-service
+maintainers:
+  - name: Integrio

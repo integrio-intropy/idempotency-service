@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: Intropy.IdempotencyService.API | v1
+  version: 1.0.0
+servers:
+  - url: http://localhost:5272/
+paths:
+  /info/{component}/{id}:
+    get:
+      tags:
+        - Intropy.IdempotencyService.API
+      summary: Info
+      description: See details about a message
+      operationId: info
+      parameters:
+        - name: component
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageInfo'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /status:
+    post:
+      tags:
+        - Intropy.IdempotencyService.API
+      summary: Status
+      description: Check status for a message
+      operationId: status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /commit:
+    post:
+      tags:
+        - Intropy.IdempotencyService.API
+      summary: Commit
+      description: Commit state for a message
+      operationId: commit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /healthz:
+    get:
+      tags:
+        - Intropy.IdempotencyService.API
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Action:
+      enum:
+        - Proceed
+        - Ignore
+    MessageInfo:
+      required:
+        - component
+        - id
+        - hash
+        - timestamp
+      type: object
+      properties:
+        component:
+          type: string
+        id:
+          type: string
+        hash:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+    Reason:
+      enum:
+        - NewerData
+        - SameData
+        - StaleData
+        - NoPreviousData
+    StatusResponse:
+      required:
+        - action
+        - reason
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/Action'
+        reason:
+          $ref: '#/components/schemas/Reason'
+tags:
+  - name: Intropy.IdempotencyService.API

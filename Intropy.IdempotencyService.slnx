@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Client/">
+    <Project Path="client/src/Intropy.IdempotencyService.Client.csproj" />
+    <Project Path="client/test/Intropy.IdempotencyService.Client.Test.csproj" />
+  </Folder>
+  <Folder Name="/Service/">
+    <Project Path="src\Intropy.IdempotencyService.csproj" />
+    <Project Path="test\Intropy.IdempotencyService.Test.csproj" />
+  </Folder>
+</Solution>
