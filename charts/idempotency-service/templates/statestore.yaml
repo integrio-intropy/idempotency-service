@@ -8,6 +8,8 @@ spec:
   metadata:
     - name: keyPrefix
       value: "none"
-    {{- .Values.stateStore.metadata | toYaml | nindent 4 }}
+    {{- with .Values.stateStore.metadata }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 scopes:
   - {{ include "idempotency-service.fullname" . }}
