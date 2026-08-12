@@ -44,7 +44,7 @@ public class IdempotencyServiceClient(DaprClient daprClient, IOptions<Idempotenc
             }
 
             var obj = await JsonSerializer.DeserializeAsync<StatusResponse>(
-                await res.Content.ReadAsStreamAsync(cancellationToken), cancellationToken: cancellationToken);
+                await res.Content.ReadAsStreamAsync(cancellationToken), JsonOptions, cancellationToken);
 
             if (obj is null)
                 throw new IdempotencyServiceException("Failed to deserialize response", (int)res.StatusCode, null);
