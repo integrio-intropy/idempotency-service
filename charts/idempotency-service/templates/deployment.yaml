@@ -68,6 +68,8 @@ spec:
           env:
             - name: DaprComponentsConfig__StateStoreName
               value: {{ include "idempotency-service.stateStoreName" . }}
+            - name: IdempotencyConfig__RecordTtl
+              value: {{ .Values.idempotency.recordTtl | quote }}
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

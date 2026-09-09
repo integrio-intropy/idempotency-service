@@ -20,6 +20,24 @@ Decision logic:
 | Record exists | no | yes | **Proceed** (NewerData) |
 | Record exists | no | no | **Ignore** (StaleData) |
 
+## Configuration
+
+| Setting | Environment variable | Default | Description |
+|---|---|---|---|
+| `DaprComponentsConfig:StateStoreName` | `DaprComponentsConfig__StateStoreName` | — (required) | Name of the Dapr state store component used to persist records. |
+| `IdempotencyConfig:RecordTtl` | `IdempotencyConfig__RecordTtl` | `30.00:00:00` (30 days) | How long a committed record is retained before it expires. |
+
+`RecordTtl` is a .NET `TimeSpan` in `[d.]hh:mm:ss` form — `30.00:00:00` is 30 days, `12:00:00` is 12 hours. It must be greater than zero; the service fails to start otherwise.
+
+The TTL is stamped onto each record when it is committed, so changing `RecordTtl` only affects records committed afterwards — it does not re-age records already in the state store.
+
+Via the Helm chart:
+
+```yaml
+idempotency:
+  recordTtl: "30.00:00:00"
+```
+
 ## Repository layout
 
 - `src/` — the ASP.NET Core service

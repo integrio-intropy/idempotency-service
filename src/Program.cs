@@ -26,6 +26,11 @@ builder.Services.AddOptions<DaprComponentsConfig>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddOptions<IdempotencyConfig>()
+    .Bind(builder.Configuration.GetSection("IdempotencyConfig"))
+    .Validate(c => c.RecordTtl > TimeSpan.Zero, "IdempotencyConfig:RecordTtl must be greater than zero.")
+    .ValidateOnStart();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

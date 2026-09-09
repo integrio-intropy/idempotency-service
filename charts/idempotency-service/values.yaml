@@ -116,6 +116,13 @@ podDisruptionBudget:
   enabled: true
   minAvailable: 1
   
+# This configures how long committed idempotency records are retained.
+idempotency:
+  # Time-to-live applied to a record when it is committed.
+  # Format: [d.]hh:mm:ss - e.g. "30.00:00:00" is 30 days, "12:00:00" is 12 hours.
+  # Note: the TTL is stamped at write time, so changing this does not re-age existing records.
+  recordTtl: "30.00:00:00"
+
 # This configures the Dapr state store component used to persist idempotency records.
 # More information can be found here: https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-postgresql-v2/
 stateStore:
