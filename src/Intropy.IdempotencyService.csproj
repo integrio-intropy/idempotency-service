@@ -12,7 +12,7 @@
     <PackageReference Include="Dapr.AspNetCore" Version="1.17.9" />
     <PackageReference Include="Intropy.Contracts" Version="0.1.0" />
     <PackageReference Include="Intropy.Telemetry.AspNetCore" Version="0.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
   </ItemGroup>
 
 </Project>
