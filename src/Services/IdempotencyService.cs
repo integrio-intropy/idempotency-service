@@ -13,7 +13,8 @@ namespace Intropy.IdempotencyService.Services;
 public class IdempotencyService(
     ILogger<IdempotencyService> logger,
     DaprClient dapr,
-    IOptions<DaprComponentsConfig> daprConfig) : IIdempotencyService
+    IOptions<DaprComponentsConfig> daprConfig,
+    IOptions<IdempotencyConfig> idempotencyConfig) : IIdempotencyService
 {
     public async Task<Result<Maybe<MessageInfo>, ProblemDetails>> GetInfo(string component, string id,
         CancellationToken? token = null)
@@ -67,10 +68,7 @@ public class IdempotencyService(
                 GetStateStoreKey(messageInfo.Component, messageInfo.Id),
                 record,
                 null,
-                new Dictionary<string, string>
-                {
-                    ["ttlInSeconds"] = ((int)TimeSpan.FromDays(30).TotalSeconds).ToString()
-                },
+                idempotencyConfig.Value.ToStateMetadata(),
                 token ?? CancellationToken.None);
         }
         catch (Exception e)
